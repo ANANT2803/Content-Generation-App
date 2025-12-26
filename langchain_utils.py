@@ -7,16 +7,16 @@ import httpx
 # Load environment variables
 load_dotenv()
 
-from langchain_openai import AzureChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.output_parsers import StrOutputParser
 from prompts import final_prompt
 
 # --- 1. Setup Azure Client ---
-AZURE_API_KEY = os.getenv("AZURE_API_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_API_BASE")
-AZURE_OPEN_API_VERSION = os.getenv("AZURE_OPEN_API_VERSION")
-AZURE_MODEL_NAME = os.getenv("AZURE_MODEL_NAME")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_ENDPOINT = os.getenv("OPENAI_API_BASE") 
+OPENAI_API_VERSION = os.getenv("OPENAI_API_VERSION")
+OPENAI_MODEL_NAME = os.getenv("OPENAI_MODEL_NAME")
 
 # --- 2. Helper Functions ---
 
@@ -42,11 +42,9 @@ def get_chain():
     
     # Initialize the LLM
     # We set temperature=0.7 to allow for creativity
-    llm = AzureChatOpenAI(
-        api_key=AZURE_API_KEY,
-        azure_endpoint=AZURE_OPENAI_ENDPOINT,
-        model=AZURE_MODEL_NAME,
-        api_version=AZURE_OPEN_API_VERSION,
+    llm = ChatOpenAI(
+        api_key=OPENAI_API_KEY,
+        model=OPENAI_MODEL_NAME,
         temperature=0.7 
     )
 
@@ -85,4 +83,5 @@ def invoke_chain(user_input, messages):
 # Prompt->LLM->Parse/Clean
 # examples->prompt->langchain
 # prompts >> fine-tuning
+
 # main.py (streamlit)
