@@ -2,16 +2,16 @@ import streamlit as st
 import os
 from langchain_community.vectorstores import Chroma
 from langchain_core.example_selectors import SemanticSimilarityExampleSelector
-from langchain_openai import AzureOpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
 examples = [
     {
-        "input": "Generate an Instagram content for the alumni achievement post for our alumnus, 'Mr. Pratyush Choudhury (BME '21)' who co-founded 'Activate VC' and raised '75 million USD' in funding"
+        "input": "Generate an Instagram content for the alumni achievement post for our alumnus, 'Mr. Pratyush Choudhury (BME '21)' who co-founded 'Activate VC' and raised '75 million USD' in funding" 
         "query": "SAIC is proud to share that Mr. Pratyush Choudhury (BME ‘21), alumnus of IIT (BHU), Varanasi, has co-founded Activate VC, India’s first AI-focused venture fund, with an impressive Fund I of $75 million, leveraging his exceptional trajectory in the venture ecosystem to become one of the youngest General Partners in the country, aiming to empower India’s next generation of AI founders, and we extend our heartfelt congratulations to him on this remarkable achievement."
 
     },
    {
-       "input": "Generate an instagram content for the alumni achievement post for our alumnus, 'Mr.Prateek Maheshwari' for his role in the 'Physics Wallah' IPO."   
+       "input": "Generate an instagram content for the alumni achievement post for our alumnus, 'Mr.Prateek Maheshwari' for his role in the 'Physics Wallah' IPO."  
        "query": "SAIC is proud to celebrate this incredible achievement as we congratulate Prateek Maheshwari for being an important part of Physics Wallah’s spectacular IPO, highlighting his journey from campus corridors to contributing to one of India’s most inspiring ed-tech journeys, and here’s to innovation, impact, and many more milestones ahead."
    },
    {
@@ -120,14 +120,14 @@ examples = [
 
 ]
 
-AZURE_API_KEY = os.getenv("AZURE_API_KEY")
-AZURE_API_BASE = os.getenv("AZURE_API_BASE")
-AZURE_API_VERSION = os.getenv("AZURE_OPEN_API_VERSION")
-AZURE_MODEL_NAME = os.getenv("AZURE_MODEL_NAME")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_BASE = os.getenv("OPENAI_API_BASE")
+OPENAI_API_VERSION = os.getenv("OPENAI_API_VERSION")
+OPENAI_MODEL_NAME = os.getenv("OPENAI_MODEL_NAME")
 
 # Embeddings Config
-AZURE_EMBEDDINGS_MODEL_NAME = os.getenv("AZURE_OPENAI_EMBEDDINGS_DEPLOYMENT_NAME")
-AZURE_API_VERSION_EMBEDDING = os.getenv("AZURE_API_VERSION_EMBEDDING")
+OPENAI_EMBEDDINGS_MODEL_NAME = os.getenv("OPENAI_EMBEDDINGS_DEPLOYMENT_NAME")
+OPENAI_API_VERSION_EMBEDDING = os.getenv("OPENAI_API_VERSION_EMBEDDING")
 
 @st.cache_resource
 def get_example_selector():
@@ -137,11 +137,9 @@ def get_example_selector():
     """
     example_selector = SemanticSimilarityExampleSelector.from_examples(
         examples,
-        AzureOpenAIEmbeddings(
-            api_key=AZURE_API_KEY,
-            azure_endpoint=AZURE_API_BASE,
-            api_version=AZURE_API_VERSION_EMBEDDING,
-            azure_deployment=AZURE_EMBEDDINGS_MODEL_NAME,
+        OpenAIEmbeddings(
+            api_key=OPENAI_API_KEY,
+            model=OPENAI_EMBEDDINGS_MODEL_NAME
         ),
         Chroma, # Vector Store
         k=1, # We only need 1 or 2 good examples for style matching
