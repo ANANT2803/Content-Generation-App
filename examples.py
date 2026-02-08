@@ -1,9 +1,20 @@
-import streamlit as st
-import os
-from langchain_community.vectorstores import Chroma
-from langchain_core.example_selectors import SemanticSimilarityExampleSelector
-from langchain_openai import OpenAIEmbeddings
 
+import os
+# --- CRITICAL: DISABLE TELEMETRY BEFORE IMPORTING CHROMA/FAISS ---
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
+
+import streamlit as st
+from dotenv import load_dotenv
+
+# --- Imports for Google & FAISS ---
+from langchain_community.vectorstores import FAISS
+from langchain_core.example_selectors import SemanticSimilarityExampleSelector
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+load_dotenv()
+
+# --- Examples List ---
+# NOTE: I changed "query" to "response" to match your prompts.py file variables.
 examples = [
     {
         "input": "Generate an Instagram content for the alumni achievement post for our alumnus, 'Mr. Pratyush Choudhury (BME '21)' who co-founded 'Activate VC' and raised '75 million USD' in funding",
@@ -83,6 +94,8 @@ examples = [
     }
 ]
 
+# --- 3. The Selector Logic (Updated for Google) ---
+
 @st.cache_resource
 def get_example_selector():
     """
@@ -102,9 +115,9 @@ def get_example_selector():
 
     example_selector = SemanticSimilarityExampleSelector.from_examples(
         examples,
-        google_embeddings, 
+        google_embeddings, # Replaced AzureEmbeddings with Google
         FAISS,            # Vector Store
-        k=2,               # We only need 1-2 good example for style matching
+        k=1,               # We only need 1 good example for style matching
         input_keys=["input"],
     )
     return example_selector
