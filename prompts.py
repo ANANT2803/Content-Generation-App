@@ -1,4 +1,5 @@
-# prompt.pyfrom langchain_core.prompts import (
+# prompt.py
+from langchain_core.prompts import (
     ChatPromptTemplate,
     MessagesPlaceholder,
     FewShotChatMessagePromptTemplate,
