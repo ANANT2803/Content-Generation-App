@@ -1,0 +1,21 @@
+# --- LangChain 0.3 Stack ---
+langchain>=0.3.0
+langchain-community>=0.3.0t
+langchain-core>=0.3.0
+langchain-text-splitters>=0.3.0
+langsmith>=0.1.125
+
+# --- Google Gemini ---
+langchain-google-genai>=2.0.0
+
+# --- Vector Store ---
+faiss-cpu
+langchain-community>=0.3.0
+
+# --- Utilities ---
+psycopg2-binary
+python-dotenv
+httpx
+pydantic>=2.0
+streamlit
+sqlparse
